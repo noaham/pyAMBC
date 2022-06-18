@@ -10,7 +10,7 @@ def aorn(a: int,n: int) -> int:
     else:
         return a
 
-def is_partition(L: list[int]) -> bool:
+def is_partition(L) -> bool:
     r""" checks if a list of integers is a partition (i.e. is it weakly decreasing)
     
     :param L: a list of integers
