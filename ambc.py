@@ -438,7 +438,7 @@ def AMBC(window):
         Q = Q.add_row(perm.Qrow)
         rho.append(perm.rho_row) # rho.add_row([perm.rho_row])
         perm = partialperm(perm.inner_corners_w)
-    return [P,Q,rho]
+    return (P,Q,rho)
 
 def invAMBC(P,Q,rho):
     P = P.stdrep()
@@ -505,41 +505,5 @@ def invRSK(P,Q):
         return (invRSK(Pprev,Qprev) + [letter])
     else:
         raise ValueError("P and Q must be the same shape and P must be semistandard while Q is standard")
-
-#print("starting...")
-# w = [49, 22, 5, 23, 52, 10, 19, 24]
-# perm = partialperm(w)
-# print(AMBC(w)[0])
-# print()
-# print(AMBC(w)[1])
-# print()
-# print(AMBC(w)[2])
-
-# sh = skewshape([2,1])
-# A = tableau(sh,[[1,2],[3]])
-# B = tableau(sh,[[1,3],[2]])
-# print(RSK(invRSK(A,B)))
-
-# s1 = stream([ball(1,-1),ball(3,2)],4)
-# s2 = stream([ball(1,3),ball(3,6)],4)
-
-#print(s2.nearest_NW(ball(1,3)))
-#s = st_r([2,3,5,7],[1,4,5,7],2,7)
-#print(s0)
-# p = partialperm([3,'x','x',9,'x',6,'x'])
-# for b in p.balls:
-#     print(b,p.bk_stream_numbering(s)[p.balls.index(b)])
-# print(p.bk_w(s))
-# print(invAMBC(tabloid(7,[[2,3,5,7],[1,4],[6]]),tabloid(7,[[1,4,5,7],[3,6],[2]]),[2,0,1]))
-# print(p.balls)
-# print(p.bk_stream_numbering(s0))
-#print(p.balls.index(b.trans_row1(p.n)))
-# for b in p.rowi_balls(2):
-#     print(b)
-#     print(s0.d(b))
-#     print(p.bk_stream_numbering(s0)(b))
-
-# print(s0.nearest_NW(ball(2,6)))
-# print(p.width)
 
 

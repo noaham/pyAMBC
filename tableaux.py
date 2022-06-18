@@ -1,18 +1,33 @@
-def aorn(a,n):
+def aorn(a: int,n: int) -> int:
+    r"""
+    Returns n if a is 0, otherwise returns a
+    :param a:
+    :param n:
+    :return:
+    """
     if a == 0:
         return n
     else:
         return a
 
-def is_partition(L):
-    # checks if a list of integers is a partition (i.e. is it weakly decreasing)
+def is_partition(L: list[int]) -> bool:
+    r""" checks if a list of integers is a partition (i.e. is it weakly decreasing)
+    
+    :param L: a list of integers
+    :return: True if L is weakly decreasing, else False
+    """
     for i in range(len(L))[:-1]:
         if L[i+1] > L[i]:
             return False
     return True
 
 def is_subpartition(mu,lam):
-    # checks if the diagram of mu fits in the diagram of lambda
+    r"""
+    checks if the diagram of mu fits in the diagram of lambda
+    :param mu: a weakly decreasing sequence of integers
+    :param lam: as above
+    :return: True if each part of mu is smaller than the corresponding part of lam
+    """
     if (is_partition(lam) and is_partition(mu)):
         if len(mu) > len(lam):
             return False
@@ -22,7 +37,7 @@ def is_subpartition(mu,lam):
                     return False
         return True
     else:
-        return False
+        raise TypeError(f"mu: {mu} and lam: {lam} must be partitions")
 
 def strip_zeros(mu):
     # strips all zeros from a list
@@ -671,47 +686,4 @@ class tabloid(object):
     def schutzenberger(self):
         [rec,dec] = self.rect(True)
         return tabloid(self.n,rec.schutzenberger().fwd_slide(dec).T)
-
-# print("starting...")
-
-# T=chain_to_tableau([[],[2],[3,1],[4,3,1],[4,4,1]])
-# print(T.schutzenberger())
-# T = tabloid(3, [[3],[1],[2]])
-# print(T)
-# print(T.skewtab())
-
-
-# 
-# sh = skewshape([6,6,5,5,3,2,1],[6,4,4,2,1,1,1])
-
-# T = tableau(sh,[[],[2,3],[3],[1,3,4],[2,3],[4],[]])
-# sh2 = skewshape([6,6,6,6,6,2,1],[6,6,5,5,3,2,1])
-# S = tableau(sh2,[[],[],[1],[2],[3,4,5],[],[]])
-
-# print(T)
-# print(T.fwd_slide_adj(S,True))
-#print(S)
-#print(S.boxes_ordered)
-#print(T.rev_slide_adj(S,True))
-# print(T.rev_slide(4,2))
-
-# print(T.rect(True)[0])
-# print(T.rect(True)[1])
-
-
-
-# print(T.schutzenberger())
-
-
-# T = tabloid(11,[[6,8,9,10,11],[2,4,5,7],[1,3]])
-# print(T)
-# print()
-# print(T.schutzenberger())
-
-# L = skewshape([4,2,2,2,1],[2,1,1])
-# print(L.diagram())
-# print(L.outer_addables)
-# print(L.outer_removables)
-# print(L.inner_addables)
-# print(L.inner_removables)
 

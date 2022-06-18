@@ -1,7 +1,7 @@
 from ambc import *
 from itertools import product
 
-class perm(object):
+class Perm(object):
     def __init__(self, wind):
         self.window = wind
         self.n = len(self.window)
@@ -17,7 +17,7 @@ class perm(object):
         
     def __mul__(self,other):
         if self.n == other.n:
-            return perm([self(other(i)) for i in range(1,self.n+1)])
+            return Perm([self(other(i)) for i in range(1, self.n + 1)])
         else:
             raise ValueError("permutations must be the same rank")
 
@@ -31,7 +31,7 @@ class perm(object):
             # say wi = r + kn, we want r = wi - kn --> i - kn 
             r = modn(wi,self.n)
             winv[r-1] = i - (wi-r)
-        return perm(winv)
+        return Perm(winv)
 
     def __len__(self):
         # returns the length of the permutation
@@ -57,7 +57,7 @@ class perm(object):
     # in the parabolic subgroup permuting 1,2,...,n and a is the minimal
     # coset representative
     def a(self):
-        return perm(sorted(self.window))
+        return Perm(sorted(self.window))
     
     def x(self):
         return self.a().inv()*self
@@ -76,28 +76,28 @@ class perm(object):
         a = self.a()
         (P,Q) = x.RSK()
         eQ = Q.schutzenberger()
-        ex = perm(invRSK(P,eQ))
+        ex = Perm(invRSK(P, eQ))
         ew = a*ex
         return ew
 
     def schutz(self):
         [P,Q,rho] = self.AMBC()
-        return perm(invAMBC(P,Q.schutzenberger(),rho))
+        return Perm(invAMBC(P, Q.schutzenberger(), rho))
 
     def rev_comp(self):
-        return perm([self.n-w+1 for w in self.window[::-1]])
+        return Perm([self.n - w + 1 for w in self.window[::-1]])
             
 def s(i,n):
     # the permutation that swaps i, i+1
     if i == 0:
-        return perm([0] + [i for i in range(2,n)] + [n+1])
+        return Perm([0] + [i for i in range(2, n)] + [n + 1])
     elif i in range(1,n):
-        return perm([i for i in range(1,i)]+[i+1,i]+[i for i in range(i+2,n+1)])
+        return Perm([i for i in range(1, i)] + [i + 1, i] + [i for i in range(i + 2, n + 1)])
     else:
         raise ValueError("i must be between 0 and n-1")
 
 def id(n):
-    return perm(list(range(1,n+1)))
+    return Perm(list(range(1, n + 1)))
 
 def prod(word,n=None):
     if word == []:
@@ -140,79 +140,3 @@ def conj_testr(fun,N,n=None,type='affine'):
         if not fun(p):
             return p
     return all([fun(p) for p in perms])
-
-############## OLD CODE #################
-
-def ref(i,wind):
-    n = len(wind)
-    if i > 0:
-        windi = wind[i-1]
-        windip1 = wind[i]
-        wind[i-1] = windip1
-        wind[i] = windi
-    if i == 0:
-        wind1 = wind[0]
-        windn = wind[-1]
-        wind[0] = windn - n
-        wind[-1] = wind1 + n
-    return wind
-
-def window(s,n):
-    wind = list(range(1,n+1))
-    for i in s[::-1]:
-        ref(int(i),wind)
-    return wind
-
-def xpr(wind):
-    sortwind = sorted(wind)
-    n = len(wind)
-    x = list(range(n))
-    for i in range(n):
-        x[i] = sortwind.index(wind[i])+1
-    return x
-
-def cactus(w):
-    x = xpr(w)
-    a = sorted(w)
-    [P,Q] = RSK(x)
-    eQ = Q.schutzenberger()
-    ex = invRSK(P,eQ)
-    ew = a*ex
-    return ew
-
-print("starting...")
-
-import time
-
-
-#print(all([(p==p.a()*p.x()) for p in rand_perms(100)]))
-# start = time.time()
-# def f(p):
-#     return p.cactus() == p.schutz()
-# print(conj_test(f,1000))
-# end = time.time()
-# print(end - start)
-
-start = time.time()
-def f(p):
-    return p.cactus().AMBC()[1] == p.rev_comp().AMBC()[1]
-print(conj_test(f,100))
-end = time.time()
-print(end - start)
-
-
-# for p in rand_perms(10,n=None,type='affine'):
-#     print(p.rdesc(),p.rev_comp().rdesc())
-#     print()
-
-
-# print(AMBC([-1,1,4,6]))
-# A = tabloid(4,[[1,3],[2,4]])
-# B = tabloid(4,[[3,4],[1,2]])
-# rho = [1,-1]
-# print(invAMBC(A,B,rho))
-
-# ps = rand_perms(10)
-# for p in ps:
-#     print(p,p.schutz())
-
